@@ -1,4 +1,4 @@
-package by.sologub.model;
+package ru.clevertec.model;
 
 import java.util.List;
 

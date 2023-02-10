@@ -1,17 +1,14 @@
-package by.sologub;
+package ru.clevertec;
 
-import by.sologub.model.Animal;
-import by.sologub.model.Car;
-import by.sologub.model.Flower;
-import by.sologub.model.House;
-import by.sologub.model.Person;
-import by.sologub.util.Util;
+import ru.clevertec.model.Animal;
+import ru.clevertec.model.Car;
+import ru.clevertec.model.Flower;
+import ru.clevertec.model.House;
+import ru.clevertec.model.Person;
+import ru.clevertec.util.Util;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) throws IOException {
