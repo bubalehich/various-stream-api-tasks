@@ -103,7 +103,13 @@ public class Main {
 
     private static void task8() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        //        animals.stream() Продолжить ...
+
+        animals.stream()
+                .sorted(Comparator.comparing(Animal::getBread))
+                .limit(100)
+                .map(Animal::getAge)
+                .reduce(Integer::max)
+                .ifPresent(System.out::println);
     }
 
     private static void task9() throws IOException {
