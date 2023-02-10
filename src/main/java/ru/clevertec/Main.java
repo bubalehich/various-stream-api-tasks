@@ -143,7 +143,12 @@ public class Main {
 
     private static void task11() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        //        animals.stream() Продолжить ...
+
+        animals.stream()
+                .filter(a -> a.getOrigin().equals("Indonesian"))
+                .mapToInt(Animal::getAge)
+                .average()
+                .ifPresent(System.out::println);
     }
 
     private static void task12() throws IOException {
