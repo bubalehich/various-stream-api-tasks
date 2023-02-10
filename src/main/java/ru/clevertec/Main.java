@@ -44,8 +44,13 @@ public class Main {
 
     private static void task2() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        //        animals.stream() Продолжить ...
 
+        animals.stream()
+                .filter(a -> a.getOrigin().equals("Japanese"))
+                .map(a -> a.getGender().equals("Female")
+                        ? a.getBread().toUpperCase()
+                        : a.getBread())
+                .forEach(System.out::println);
     }
 
     private static void task3() throws IOException {
@@ -168,6 +173,8 @@ public class Main {
     private static void task13() throws IOException {
         List<House> houses = Util.getHouses();
         //        Продолжить...
+
+        // 63 & 58
     }
 
     private static void task14() throws IOException {
