@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
     private static final String JAPANESE = "Japanese";
@@ -206,7 +207,72 @@ public class Main {
 
     private static void task14() throws IOException {
         List<Car> cars = Util.getCars();
-        //        Продолжить...
+
+        var turkmenistanCars = cars.stream()
+                .filter(c -> c.getCarMake().equals("Jaguar")
+                        || c.getColor().equals("White"))
+                .toList();
+
+        var uzbekistanCars = cars.stream()
+                .filter(c -> !turkmenistanCars.contains(c))
+                .filter(c -> c.getMass() < 1500
+                        || (c.getCarMake().equals("BMW")
+                        || c.getCarMake().equals("Lexus")
+                        || c.getCarMake().equals("Chrysler")
+                        || c.getCarMake().equals("Toyota")))
+                .toList();
+
+        var kazakhstanCars = cars.stream()
+                .filter(c -> !turkmenistanCars.contains(c)
+                        && !uzbekistanCars.contains(c))
+                .filter(c -> c.getColor().equals("Black")
+                        && c.getMass() > 4000
+                        && (c.getCarMake().equals("GMC") || c.getCarMake().equals("Dodge"))).toList();
+
+        var kyrgyzstanCars = cars.stream()
+                .filter(c -> !turkmenistanCars.contains(c)
+                        && !uzbekistanCars.contains(c)
+                        && !kazakhstanCars.contains(c))
+                .filter(c -> c.getReleaseYear() < 1982
+                        || c.getCarModel().equals("Civic")
+                        || c.getCarModel().equals("Cherokee"))
+                .toList();
+
+        var russiaCars = cars.stream()
+                .filter(c -> !turkmenistanCars.contains(c)
+                        && !uzbekistanCars.contains(c)
+                        && !kyrgyzstanCars.contains(c)
+                        && !kazakhstanCars.contains(c))
+                .filter(c -> (!c.getColor().equals("Yellow")
+                        && !c.getColor().equals("Red")
+                        && !c.getColor().equals("Blue")
+                        && !c.getColor().equals("Green"))
+                        || c.getPrice() > 40000)
+                .toList();
+
+        var mongoliaCars = cars.stream()
+                .filter(c -> !turkmenistanCars.contains(c)
+                        && !uzbekistanCars.contains(c)
+                        && !kyrgyzstanCars.contains(c)
+                        && !russiaCars.contains(c)
+                        && !kazakhstanCars.contains(c))
+                .filter(c -> c.getVin().contains("59"))
+                .toList();
+
+        System.out.printf("Total mass = %d",
+                Stream.of(uzbekistanCars, kyrgyzstanCars, kyrgyzstanCars, turkmenistanCars, mongoliaCars, russiaCars)
+                        .flatMap(Collection::stream)
+                        .mapToInt(Car::getPrice)
+                        .sum()
+        );
+
+        var totalSum = Stream.of(uzbekistanCars, kyrgyzstanCars, kyrgyzstanCars, turkmenistanCars, mongoliaCars, russiaCars)
+                .peek(l -> System.out.println(l.stream().mapToInt(Car::getPrice).sum()))
+                .mapToDouble( l -> (double) l.stream().mapToInt(Car::getMass).sum() / 1000 * 7.14)
+                .peek(System.out::println)
+                .sum();
+
+        System.out.printf("Total sum = %f", totalSum);
     }
 
     private static void task15() throws IOException {
