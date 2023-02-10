@@ -177,6 +177,23 @@ public class Main {
 
     private static void task15() throws IOException {
         List<Flower> flowers = Util.getFlowers();
-        //        Продолжить...
+
+        System.out.println(
+                flowers.stream()
+                        .sorted(Comparator
+                                .comparing(Flower::getOrigin)
+                                .reversed()
+                                .thenComparing(Flower::getPrice)
+                                .thenComparing(Flower::getWaterConsumptionPerDay)
+                                .reversed())
+                        .filter(f -> f.getCommonName().matches("[C-S].*"))
+                        .filter(Flower::isShadePreferred)
+                        .filter(f -> f.getFlowerVaseMaterial().contains("Glass")
+                                || f.getFlowerVaseMaterial().contains("Aluminum")
+                                || f.getFlowerVaseMaterial().contains("Steel"))
+                        .map(f -> f.getPrice() + f.getWaterConsumptionPerDay() * 1.39 * 365 * 5)
+                        .reduce(0.0, Double::sum)
+        );
+        //result 3629693.9850000036
     }
 }
