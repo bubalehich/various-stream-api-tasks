@@ -1,14 +1,13 @@
 package ru.clevertec;
 
-import ru.clevertec.model.Animal;
-import ru.clevertec.model.Car;
-import ru.clevertec.model.Flower;
-import ru.clevertec.model.House;
-import ru.clevertec.model.Person;
+import ru.clevertec.model.*;
 import ru.clevertec.util.Util;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -31,7 +30,14 @@ public class Main {
 
     private static void task1() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        //        animals.stream() Продолжить ...
+
+        AtomicInteger index = new AtomicInteger(0);
+        animals.stream()
+                .filter(a -> a.getAge() > 10 && a.getAge() < 20)
+                .sorted(Comparator.comparingInt(Animal::getAge))
+                .collect(Collectors.groupingBy(x -> index.getAndIncrement() / 7))
+                .get(2)
+                .forEach(System.out::println);
     }
 
     private static void task2() throws IOException {
