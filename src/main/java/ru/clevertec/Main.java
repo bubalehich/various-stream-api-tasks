@@ -4,6 +4,8 @@ import ru.clevertec.model.*;
 import ru.clevertec.util.Util;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -153,7 +155,14 @@ public class Main {
 
     private static void task12() throws IOException {
         List<Person> people = Util.getPersons();
-//        Продолжить...
+
+        people.stream()
+                .filter(p -> p.getGender().equals("Male"))
+                .filter(p -> Math.abs(ChronoUnit.YEARS.between(LocalDate.now(), p.getDateOfBirth())) >= 18
+                        && Math.abs(ChronoUnit.YEARS.between(LocalDate.now(), p.getDateOfBirth())) <= 27)
+                .sorted(Comparator.comparingInt(Person::getRecruitmentGroup))
+                .limit(200)
+                .forEach(System.out::println);
     }
 
     private static void task13() throws IOException {
