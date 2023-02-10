@@ -114,7 +114,21 @@ public class Main {
 
     private static void task9() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        //        animals.stream() Продолжить ...
+
+        /* With char array */
+        animals.stream()
+                .map(Animal::getBread)
+                .map(String::toCharArray)
+                .mapToInt(a -> a.length)
+                .min()
+                .ifPresent(System.out::println);
+
+        /* Without char array */
+        animals.stream()
+                .map(Animal::getBread)
+                .mapToInt(String::length)
+                .min()
+                .ifPresent(System.out::println);
     }
 
     private static void task10() throws IOException {
