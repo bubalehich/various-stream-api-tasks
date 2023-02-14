@@ -6,8 +6,10 @@ import ru.clevertec.util.Util;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -172,9 +174,21 @@ public class Main {
 
     private static void task13() throws IOException {
         List<House> houses = Util.getHouses();
-        //        Продолжить...
 
-        // 63 & 58
+        houses.stream()
+                .collect(Collectors.partitioningBy(x -> x.getBuildingType().equals("Hospital")))
+                .entrySet()
+                .stream()
+                .flatMap(entry -> entry.getKey()
+                        ? entry.getValue().stream().map(House::getPersonList).flatMap(Collection::stream).map(person -> Map.entry(1, person))
+                        : entry.getValue().stream().map(House::getPersonList).flatMap(Collection::stream)
+                        .map(person -> Math.abs(ChronoUnit.YEARS.between(LocalDate.now(), person.getDateOfBirth())) < 18
+                                || Math.abs(ChronoUnit.YEARS.between(LocalDate.now(), person.getDateOfBirth())) > 58
+                                ? Map.entry(2, person)
+                                : Map.entry(3, person)))
+                .sorted((entry1, entry2) -> entry1.getKey() - entry2.getKey())
+                .limit(500)
+                .forEach(System.out::println);
     }
 
     private static void task14() throws IOException {
