@@ -14,6 +14,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Main {
+    private static final String JAPANESE = "Japanese";
+    private static final String FEMALE = "Female";
+    private static final String HUNGARIAN = "Hungarian";
+    private static final String MALE = "Male";
+    private static final String OCEANIA = "Oceania";
+    private static final String INDONESIAN = "Indonesian";
+    private static final String HOSPITAL = "Hospital";
+    private static final String GLASS = "Glass";
+    private static final String ALUMINIUM = "Aluminum";
+    private static final String STEEL = "Steel";
+    private static final int FIVE_YEARS_IN_DAYS = 365 * 5;
+
+
     public static void main(String[] args) throws IOException {
         task1();
         task2();
@@ -48,8 +61,8 @@ public class Main {
         List<Animal> animals = Util.getAnimals();
 
         animals.stream()
-                .filter(a -> a.getOrigin().equals("Japanese"))
-                .map(a -> a.getGender().equals("Female")
+                .filter(a -> a.getOrigin().equals(JAPANESE))
+                .map(a -> a.getGender().equals(FEMALE)
                         ? a.getBread().toUpperCase()
                         : a.getBread())
                 .forEach(System.out::println);
@@ -71,7 +84,7 @@ public class Main {
 
         System.out.println(
                 animals.stream()
-                        .filter(a -> a.getGender().equals("Female"))
+                        .filter(a -> a.getGender().equals(FEMALE))
                         .count()
         );
     }
@@ -82,7 +95,7 @@ public class Main {
         System.out.println(
                 animals.stream()
                         .filter(a -> a.getAge() > 20 && a.getAge() < 30)
-                        .anyMatch(a -> a.getOrigin().equals("Hungarian"))
+                        .anyMatch(a -> a.getOrigin().equals(HUNGARIAN))
                         ? "Animal from Hungarian exists."
                         : "Animal from Hungarian not exists."
         );
@@ -93,7 +106,7 @@ public class Main {
 
         System.out.println(
                 animals.stream()
-                        .anyMatch(a -> !a.getGender().equals("Male") && !a.getGender().equals("Female"))
+                        .anyMatch(a -> !a.getGender().equals(MALE) && !a.getGender().equals(FEMALE))
                         ? "Not all animals have only `Male` or `Female` gender."
                         : "All animals have only `Male` or `Female` gender."
         );
@@ -104,7 +117,7 @@ public class Main {
 
         System.out.println(
                 animals.stream()
-                        .anyMatch(a -> a.getOrigin().equals("Oceania"))
+                        .anyMatch(a -> a.getOrigin().equals(OCEANIA))
                         ? "Animals from Oceania exist."
                         : "Animal from Oceania not exist."
         );
@@ -154,7 +167,7 @@ public class Main {
         List<Animal> animals = Util.getAnimals();
 
         animals.stream()
-                .filter(a -> a.getOrigin().equals("Indonesian"))
+                .filter(a -> a.getOrigin().equals(INDONESIAN))
                 .mapToInt(Animal::getAge)
                 .average()
                 .ifPresent(System.out::println);
@@ -164,7 +177,7 @@ public class Main {
         List<Person> people = Util.getPersons();
 
         people.stream()
-                .filter(p -> p.getGender().equals("Male"))
+                .filter(p -> p.getGender().equals(MALE))
                 .filter(p -> Math.abs(ChronoUnit.YEARS.between(LocalDate.now(), p.getDateOfBirth())) >= 18
                         && Math.abs(ChronoUnit.YEARS.between(LocalDate.now(), p.getDateOfBirth())) <= 27)
                 .sorted(Comparator.comparingInt(Person::getRecruitmentGroup))
@@ -176,7 +189,7 @@ public class Main {
         List<House> houses = Util.getHouses();
 
         houses.stream()
-                .collect(Collectors.partitioningBy(x -> x.getBuildingType().equals("Hospital")))
+                .collect(Collectors.partitioningBy(x -> x.getBuildingType().equals(HOSPITAL)))
                 .entrySet()
                 .stream()
                 .flatMap(entry -> entry.getKey()
@@ -209,12 +222,11 @@ public class Main {
                                 .reversed())
                         .filter(f -> f.getCommonName().matches("[C-S].*"))
                         .filter(Flower::isShadePreferred)
-                        .filter(f -> f.getFlowerVaseMaterial().contains("Glass")
-                                || f.getFlowerVaseMaterial().contains("Aluminum")
-                                || f.getFlowerVaseMaterial().contains("Steel"))
-                        .map(f -> f.getPrice() + f.getWaterConsumptionPerDay() * 1.39 * 365 * 5)
+                        .filter(f -> f.getFlowerVaseMaterial().contains(GLASS)
+                                || f.getFlowerVaseMaterial().contains(ALUMINIUM)
+                                || f.getFlowerVaseMaterial().contains(STEEL))
+                        .map(f -> f.getPrice() + f.getWaterConsumptionPerDay() * 1.39 * FIVE_YEARS_IN_DAYS)
                         .reduce(0.0, Double::sum)
         );
-        //result 3629693.9850000036
     }
 }
