@@ -30,6 +30,7 @@ public class Main {
         task13();
         task14();
         task15();
+        task16();
     }
 
     private static void task1() throws IOException {
@@ -216,5 +217,32 @@ public class Main {
                         .reduce(0.0, Double::sum)
         );
         //result 3629693.9850000036
+    }
+
+    private static void task16() throws IOException {
+        List<Car> cars = Util.getCars();
+
+        /* Finding Bumblbee (Chevrolet Camaro, 1977) */
+        cars.stream()
+                .filter(c -> c.getColor().equals("Yellow")
+                        && c.getCarMake().equals("Chevrolet")
+                        && c.getCarMake().equals("Camaro")
+                        && c.getReleaseYear() == 1977)
+                .findFirst()
+                .ifPresent(c -> System.out.println("Bumblbee was found!"));
+
+        /* Search for a car to buy (by year, price & mass)*/
+        var carsToBuy = cars.stream()
+                .sorted(
+                        Comparator.comparing(Car::getReleaseYear)
+                                .reversed()
+                                .thenComparing(Car::getPrice)
+                                .thenComparing(Car::getMass)
+                )
+                .filter(c -> c.getColor().equals("Indigo")
+                        || c.getColor().equals("Aquamarine")
+                        || c.getColor().equals("Blue"))
+                .peek(System.out::println)
+                .toList();
     }
 }
