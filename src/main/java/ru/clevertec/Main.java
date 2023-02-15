@@ -25,6 +25,23 @@ public class Main {
     private static final String GLASS = "Glass";
     private static final String ALUMINIUM = "Aluminum";
     private static final String STEEL = "Steel";
+    private static final String JAGUAR = "Jaguar";
+    private static final String BMW = "BMW";
+    private static final String LEXUS = "Lexus";
+    private static final String CHRYSLER = "Chrysler";
+    private static final String TOYOTA = "Toyota";
+    private static final String GMC = "GMC";
+    private static final String DODGE = "Dodge";
+    private static final String CIVIC = "Civic";
+    private static final String CHEROKEE = "Cherokee";
+    private static final String CHEVROLET = "Chevrolet";
+    private static final String CAMARO = "Camaro";
+    private static final String WHITE = "White";
+    private static final String BLACK = "Black";
+    private static final String YELLOW = "Yellow";
+    private static final String RED = "Red";
+    private static final String BLUE = "Blue";
+    private static final String GREEN = "Green";
     private static final int FIVE_YEARS_IN_DAYS = 365 * 5;
 
 
@@ -44,6 +61,7 @@ public class Main {
         task13();
         task14();
         task15();
+        task16();
     }
 
     private static void task1() throws IOException {
@@ -209,33 +227,34 @@ public class Main {
         List<Car> cars = Util.getCars();
 
         var turkmenistanCars = cars.stream()
-                .filter(c -> c.getCarMake().equals("Jaguar")
-                        || c.getColor().equals("White"))
+                .filter(c -> c.getCarMake().equals(JAGUAR)
+                        || c.getColor().equals(WHITE))
                 .toList();
 
         var uzbekistanCars = cars.stream()
                 .filter(c -> !turkmenistanCars.contains(c))
                 .filter(c -> c.getMass() < 1500
-                        || (c.getCarMake().equals("BMW")
-                        || c.getCarMake().equals("Lexus")
-                        || c.getCarMake().equals("Chrysler")
-                        || c.getCarMake().equals("Toyota")))
+                        || (c.getCarMake().equals(BMW)
+                        || c.getCarMake().equals(LEXUS)
+                        || c.getCarMake().equals(CHRYSLER)
+                        || c.getCarMake().equals(TOYOTA)))
                 .toList();
 
         var kazakhstanCars = cars.stream()
                 .filter(c -> !turkmenistanCars.contains(c)
                         && !uzbekistanCars.contains(c))
-                .filter(c -> c.getColor().equals("Black")
+                .filter(c -> c.getColor().equals(BLACK)
                         && c.getMass() > 4000
-                        && (c.getCarMake().equals("GMC") || c.getCarMake().equals("Dodge"))).toList();
+                        && (c.getCarMake().equals(GMC) || c.getCarMake().equals(DODGE)))
+                .toList();
 
         var kyrgyzstanCars = cars.stream()
                 .filter(c -> !turkmenistanCars.contains(c)
                         && !uzbekistanCars.contains(c)
                         && !kazakhstanCars.contains(c))
                 .filter(c -> c.getReleaseYear() < 1982
-                        || c.getCarModel().equals("Civic")
-                        || c.getCarModel().equals("Cherokee"))
+                        || c.getCarModel().equals(CIVIC)
+                        || c.getCarModel().equals(CHEROKEE))
                 .toList();
 
         var russiaCars = cars.stream()
@@ -243,10 +262,10 @@ public class Main {
                         && !uzbekistanCars.contains(c)
                         && !kyrgyzstanCars.contains(c)
                         && !kazakhstanCars.contains(c))
-                .filter(c -> (!c.getColor().equals("Yellow")
-                        && !c.getColor().equals("Red")
-                        && !c.getColor().equals("Blue")
-                        && !c.getColor().equals("Green"))
+                .filter(c -> (!c.getColor().equals(YELLOW)
+                        && !c.getColor().equals(RED)
+                        && !c.getColor().equals(BLUE)
+                        && !c.getColor().equals(GREEN))
                         || c.getPrice() > 40000)
                 .toList();
 
@@ -268,7 +287,7 @@ public class Main {
 
         var totalSum = Stream.of(uzbekistanCars, kyrgyzstanCars, kyrgyzstanCars, turkmenistanCars, mongoliaCars, russiaCars)
                 .peek(l -> System.out.println(l.stream().mapToInt(Car::getPrice).sum()))
-                .mapToDouble( l -> (double) l.stream().mapToInt(Car::getMass).sum() / 1000 * 7.14)
+                .mapToDouble(l -> (double) l.stream().mapToInt(Car::getMass).sum() / 1000 * 7.14)
                 .peek(System.out::println)
                 .sum();
 
@@ -294,5 +313,31 @@ public class Main {
                         .map(f -> f.getPrice() + f.getWaterConsumptionPerDay() * 1.39 * FIVE_YEARS_IN_DAYS)
                         .reduce(0.0, Double::sum)
         );
+    }
+
+    private static void task16() throws IOException {
+        List<Car> cars = Util.getCars();
+
+        /* Finding Bumblbee (Chevrolet Camaro, 1977) */
+        cars.stream()
+                .filter(c -> c.getColor().equals(YELLOW)
+                        && c.getCarMake().equals(CHEVROLET)
+                        && c.getCarMake().equals(CAMARO)
+                        && c.getReleaseYear() == 1977)
+                .findFirst()
+                .ifPresent(c -> System.out.println("Bumblbee was found!"));
+
+        /* Search for a car to buy (by year, price & mass)*/
+        cars.stream()
+                .sorted(
+                        Comparator.comparing(Car::getReleaseYear)
+                                .reversed()
+                                .thenComparing(Car::getPrice)
+                                .thenComparing(Car::getMass)
+                )
+                .filter(c -> c.getColor().equals(YELLOW)
+                        || c.getColor().equals(RED)
+                        || c.getColor().equals(GREEN))
+                .forEach(System.out::println);
     }
 }
