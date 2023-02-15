@@ -1,4 +1,4 @@
-package by.sologub.model;
+package ru.clevertec.model;
 
 public class Car {
     private int id;
